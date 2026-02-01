@@ -4,10 +4,13 @@
 import argparse
 import json
 import logging
+import sys
 from datetime import datetime
 from pathlib import Path
 
 RUNS_DIR = Path(__file__).resolve().parent.parent / "runs"
+sys.path.insert(0, str(RUNS_DIR.parent))
+import trace  # noqa: E402
 
 
 def get_run_dir(exp_name: str) -> Path:
@@ -25,6 +28,8 @@ def main() -> None:
     args = parser.parse_args()
 
     run_dir = get_run_dir(args.exp_name)
+    trace.init(run_dir)
+    trace.emit("run_started", "run_experiment.main", exp_name=args.exp_name, run_dir=str(run_dir))
 
     # Set up log file
     log_path = run_dir / "run.log"
@@ -46,6 +51,7 @@ def main() -> None:
         with open(results_path, "w") as f:
             f.write(args.results if args.results.strip().startswith("{") else json.dumps({"data": args.results}))
         logger.info("Results saved to %s", results_path)
+        trace.emit("results_saved", "run_experiment.main", path=str(results_path))
 
 
 if __name__ == "__main__":

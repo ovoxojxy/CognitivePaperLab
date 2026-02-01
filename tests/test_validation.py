@@ -1,11 +1,11 @@
 """Tests for validation."""
 
-import pytest
+import sys
 from pathlib import Path
 
-sys_path = Path(__file__).resolve().parent.parent
-import sys
-sys.path.insert(0, str(sys_path))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+import pytest
 
 from validation import SchemaError, SemanticError, validate
 

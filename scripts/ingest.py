@@ -19,6 +19,8 @@ def main() -> None:
     parser.add_argument("--storage", choices=["memory", "sqlite"], default="memory")
     parser.add_argument("--storage-path", type=str, default=None)
     parser.add_argument("--dry-run", action="store_true", help="Parse and validate only, no writes")
+    parser.add_argument("--skip-validation", action="store_true", help="Skip validation step")
+    parser.add_argument("--normalize-keys", action="store_true", help="Lowercase all record keys")
     args = parser.parse_args()
 
     raw = Path(args.input).read_text() if args.input != "-" else sys.stdin.read()
@@ -30,7 +32,14 @@ def main() -> None:
             Path(path).parent.mkdir(parents=True, exist_ok=True)
         storage = get_storage(args.storage, path=path)
 
-    records = ingest(raw, args.format, storage=storage, dry_run=args.dry_run)
+    records = ingest(
+        raw,
+        args.format,
+        storage=storage,
+        dry_run=args.dry_run,
+        skip_validation=args.skip_validation,
+        normalize_keys=args.normalize_keys,
+    )
     print(f"ingested {len(records)} records", file=sys.stderr)
     if args.dry_run:
         print("(dry-run: nothing written)", file=sys.stderr)

@@ -6,10 +6,23 @@ from parsers import parse_csv, parse_json
 from storage import Storage
 from validation import validate
 
+try:
+    import trace as _trace
+except ImportError:
+    _trace = None
 
-def _normalize_keys(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Lowercase all keys in each record."""
-    return [{k.lower(): v for k, v in r.items()} for r in records]
+
+def normalize_record_keys(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Lowercase all keys in each record. Used when normalize_keys=True."""
+    out = [{k.lower(): v for k, v in r.items()} for r in records]
+    if _trace:
+        _trace.emit("keys_normalized", "ingestion.normalize_record_keys", record_count=len(out))
+    return out
+
+
+def normalize_keys_for_ingestion(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Normalize keys for ingestion pipeline (canonical form)."""
+    return list(records)
 
 
 def ingest(
@@ -33,7 +46,7 @@ def ingest(
         raise ValueError(f"unknown format: {format}")
 
     if normalize_keys:
-        records = _normalize_keys(records)
+        records = normalize_record_keys(records)
 
     if not skip_validation:
         validate(

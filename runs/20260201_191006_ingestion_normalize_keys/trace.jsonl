@@ -1,0 +1,2 @@
+{"ts": "2026-02-01T19:10:06.644887", "event": "config_started", "source": "run_ingestion_configs.main", "config": "normalize_keys"}
+{"ts": "2026-02-01T19:10:06.644998", "event": "ingestion_done", "source": "run_ingestion_configs.main", "run_dir": "/Users/jay./Desktop/Algoverse/CognitivePaperLab/runs/20260201_191006_ingestion_normalize_keys", "record_count": 2}

@@ -1,0 +1,12 @@
+{
+  "config": {
+    "name": "skip_validation",
+    "skip_validation": true,
+    "normalize_keys": false
+  },
+  "record_count": 2,
+  "first_record_keys": [
+    "Name",
+    "count"
+  ]
+}

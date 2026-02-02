@@ -1,0 +1,2 @@
+{"ts": "2026-02-01T18:30:56.799384", "event": "run_started", "source": "run_experiment.main", "exp_name": "test_run", "run_dir": "/Users/jay./Desktop/Algoverse/CognitivePaperLab/runs/20260201_183056_test_run"}
+{"ts": "2026-02-01T18:30:56.799728", "event": "results_saved", "source": "run_experiment.main", "path": "/Users/jay./Desktop/Algoverse/CognitivePaperLab/runs/20260201_183056_test_run/results.json"}

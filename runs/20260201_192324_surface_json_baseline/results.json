@@ -1,0 +1,16 @@
+{
+  "label": "json_baseline",
+  "format": "json",
+  "record_count": 2,
+  "records": [
+    {
+      "name": "a",
+      "count": 1
+    },
+    {
+      "name": "b",
+      "count": 2
+    }
+  ],
+  "run_dir": "/Users/jay./Desktop/Algoverse/CognitivePaperLab/runs/20260201_192324_surface_json_baseline"
+}

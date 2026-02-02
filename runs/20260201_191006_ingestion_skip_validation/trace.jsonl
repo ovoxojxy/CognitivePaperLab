@@ -1,0 +1,2 @@
+{"ts": "2026-02-01T19:10:06.645108", "event": "config_started", "source": "run_ingestion_configs.main", "config": "skip_validation"}
+{"ts": "2026-02-01T19:10:06.645208", "event": "ingestion_done", "source": "run_ingestion_configs.main", "run_dir": "/Users/jay./Desktop/Algoverse/CognitivePaperLab/runs/20260201_191006_ingestion_skip_validation", "record_count": 2}

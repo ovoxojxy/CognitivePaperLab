@@ -30,7 +30,7 @@ def infer_type(val):
 
 def collect_types(obj, path="", types_map=None):
     types_map = types_map or defaultdict(set)
-    t = infer_type(val)
+    t = infer_type(obj)
     types_map[path or "."].add(t)
     if isinstance(obj, dict):
         for k, v in obj.items():

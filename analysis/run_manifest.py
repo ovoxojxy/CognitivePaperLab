@@ -15,7 +15,8 @@ def write_manifest(run_path: Path, config: dict, input_provenance: str = "") -> 
     manifest = {
         "config": config,
         "input_provenance": input_provenance or str(run_path),
-        "trace_schema_version": TRACE_SCHEMA_VERSION,
+        # BUG: typo trace_schemaversion - should be trace_schema_version
+        "trace_schemaversion": TRACE_SCHEMA_VERSION,
         "normalize_output_version": NORMALIZE_OUTPUT_VERSION,
     }
     with open(run_path / "manifest.json", "w") as f:

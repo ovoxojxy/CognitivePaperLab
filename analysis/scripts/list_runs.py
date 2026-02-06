@@ -23,11 +23,13 @@ def main():
         m = read_manifest(d)
         if m:
             cfg = m.get("config", {})
+            # Backwards compat: accept trace_schemaversion (typo) from old manifests
+            trace_ver = m.get("trace_schema_version") or m.get("trace_schemaversion", "unknown")
             rows.append({
                 "run": d.name,
                 "format": cfg.get("format", "-"),
                 "order": cfg.get("order", "-"),
-                "trace_schema": m.get("trace_schema_version", "unknown"),
+                "trace_schema": trace_ver,
                 "norm_version": m.get("normalize_output_version", "unknown"),
                 "provenance": (m.get("input_provenance", "") or "-")[:40],
             })

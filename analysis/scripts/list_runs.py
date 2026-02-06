@@ -23,11 +23,12 @@ def main():
         m = read_manifest(d)
         if m:
             cfg = m.get("config", {})
+            # BUG: typo trace_schemaversion - should be trace_schema_version
             rows.append({
                 "run": d.name,
                 "format": cfg.get("format", "-"),
                 "order": cfg.get("order", "-"),
-                "trace_schema": m.get("trace_schema_version", "unknown"),
+                "trace_schema": m.get("trace_schema_version", m.get("trace_schemaversion", "unknown")),
                 "norm_version": m.get("normalize_output_version", "unknown"),
                 "provenance": (m.get("input_provenance", "") or "-")[:40],
             })

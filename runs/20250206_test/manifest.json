@@ -1,0 +1,6 @@
+{
+  "config": {"format": "json", "order": "query_index", "run_id": "20250206_test"},
+  "input_provenance": "script",
+  "trace_schemaversion": "v1",
+  "normalize_output_version": "1.0"
+}

@@ -1,0 +1,6 @@
+{
+  "decision_point": "validate_config_call",
+  "params": {"limit": 100},
+  "outcome": "success",
+  "timestamp": "2025-02-05T10:00:00Z"
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "query_index": 0,
+    "query": "Who made the most recent commit to HojichaResearchChannel branch RA1?",
+    "final_response": "Brent made the most recent commit: c0171b5",
+    "record_count": 1
+  },
+  {
+    "query_index": 3,
+    "query": "What was the issue with validate_config_v2?",
+    "final_response": "Success message format mismatch; fix in commit a2935e9",
+    "record_count": 1
+  }
+]

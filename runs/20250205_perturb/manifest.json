@@ -1,0 +1,12 @@
+{
+  "config": {
+    "format": "json",
+    "order": "query_index",
+    "normalize_keys": false,
+    "skip_validation": false,
+    "run_id": "20250205_perturb"
+  },
+  "input_provenance": "runs/20250205_perturb",
+  "trace_schema_version": "v1",
+  "normalize_output_version": "1.0"
+}

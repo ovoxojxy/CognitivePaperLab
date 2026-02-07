@@ -1,27 +1,7 @@
-{"id": "q1", "question": "What is the trace_schema_version for runs/20250204_surface?", "artifact": "runs/20250204_surface/manifest.json", "answer": "v1", "underdetermined": false}
-{"id": "q2", "question": "What is the normalize_output_version in runs/20250205_perturb manifest?", "artifact": "runs/20250205_perturb/manifest.json", "answer": "1.0", "underdetermined": false}
-{"id": "q3", "question": "What decision_point appears in trace_0.json for runs/20250204_surface?", "artifact": "runs/20250204_surface/traces/trace_0.json", "answer": "validate_config_call", "underdetermined": false}
-{"id": "q4", "question": "What is the order field in config for runs/20250204_surface?", "artifact": "runs/20250204_surface/config.json", "answer": "query_index", "underdetermined": false}
-{"id": "q5", "question": "How many output records does runs/20250205_perturb_no_explain have?", "artifact": "runs/20250205_perturb_no_explain/outputs.json", "answer": "2", "underdetermined": false}
-{"id": "q6", "question": "Who made the commit according to runs/20250205_perturb query 0 final_response?", "artifact": "runs/20250205_perturb/outputs.json", "answer": "Brent", "underdetermined": false}
-{"id": "q7", "question": "Who made the commit according to runs/20250205_perturb_no_explain query 0 final_response?", "artifact": "runs/20250205_perturb_no_explain/outputs.json", "answer": "Alex", "underdetermined": false}
-{"id": "q8", "question": "What is the judgment when comparing 20250205_perturb vs 20250205_perturb_no_explain with explainability_diff?", "artifact": "explainability_report.json or run explainability_diff", "answer": "traces_do_not_explain", "underdetermined": false}
-{"id": "q9", "question": "Does runs/20250204_surface have normalize_keys true or false?", "artifact": "runs/20250204_surface/config.json", "answer": "true", "underdetermined": false}
-{"id": "q10", "question": "What trace files exist in runs/20250204_surface/traces/?", "artifact": "runs/20250204_surface/traces/", "answer": "trace_0.json, trace_3.json", "underdetermined": false}
-{"id": "q11", "question": "What input_provenance does runs/20250205_perturb manifest list?", "artifact": "runs/20250205_perturb/manifest.json", "answer": "runs/20250205_perturb", "underdetermined": false}
-{"id": "q12", "question": "What params does trace_3 have in runs/20250204_surface?", "artifact": "runs/20250204_surface/traces/trace_3.json", "answer": "{\"limit\": 100}", "underdetermined": false}
-{"id": "q13", "question": "What is the outcome in trace_0 for runs/20250204_surface?", "artifact": "runs/20250204_surface/traces/trace_0.json", "answer": "success", "underdetermined": false}
-{"id": "q14", "question": "Are the outputs in 20250205_perturb and 20250205_perturb_no_explain identical?", "artifact": "runs/", "answer": "no", "underdetermined": false}
-{"id": "q15", "question": "Does trace_0 differ between 20250205_perturb and 20250205_perturb_no_explain?", "artifact": "runs/", "answer": "no", "underdetermined": false}
-{"id": "q16", "question": "From artifacts alone, can you infer why runs 20250205_perturb and 20250205_perturb_no_explain produce different commit author answers?", "artifact": "runs/, traces, explainability_report", "answer": "cannot infer from artifacts", "underdetermined": true}
-{"id": "q17", "question": "From manifest and traces alone, can you infer the exact prompt used to generate runs/20250204_surface?", "artifact": "manifest, traces", "answer": "cannot infer from artifacts", "underdetermined": true}
-{"id": "q18", "question": "Can you infer from artifacts whether the model made a mistake or the data was wrong in runs/20250205_perturb_no_explain?", "artifact": "runs/, traces", "answer": "cannot infer from artifacts", "underdetermined": true}
-{"id": "q19", "question": "From trace coverage only, can you determine if the agent retained the rate_limit value from Turn 1?", "artifact": "trace_coverage_matrix, traces", "answer": "cannot infer from artifacts", "underdetermined": true}
-{"id": "q20", "question": "Can you infer from explainability_report alone whether the output diff was caused by a bug or by different model behavior?", "artifact": "explainability_report.json", "answer": "cannot infer from artifacts", "underdetermined": true}
-{"id": "q21", "question": "What format does runs/20250205_perturb use for outputs?", "artifact": "runs/20250205_perturb/config.json", "answer": "json", "underdetermined": false}
-{"id": "q22", "question": "What is the query_index of the first record in runs/20250204_surface outputs?", "artifact": "runs/20250204_surface/outputs.json", "answer": "0", "underdetermined": false}
-{"id": "q23", "question": "Does runs/20250205_perturb have skip_validation enabled?", "artifact": "runs/20250205_perturb/config.json", "answer": "false", "underdetermined": false}
-{"id": "q24", "question": "From artifacts, can you infer what version of the trace emitter was used to create runs/20250204_surface?", "artifact": "manifest, config", "answer": "cannot infer from artifacts", "underdetermined": true}
-{"id": "q25", "question": "What does the normalization_note in explainability_report explain?", "artifact": "explainability_report.json", "answer": "What normalization changed (raw vs normalized diffs, coercion of record_count/count)", "underdetermined": false}
-{"id": "q26", "question": "What column headers does list_runs print for the runs table?", "artifact": "analysis/scripts/list_runs.py or run list_runs", "answer": "run, format, order, trace_ver, norm_ver, provenance", "underdetermined": false}
-{"id": "q27", "question": "For a run that has traces and a manifest, what does artifact_viewer list as NOT INFERABLE from artifacts?", "artifact": "analysis/artifact_viewer.py or run artifact_viewer on a run", "answer": "rate_limit from Turn 1 (conversation only), commit_author decision (unless traced)", "underdetermined": false}
+# Eval question bank: Slack + code queries live in servers-archived
+
+Queries about Slack conversations and code updates (probes, manifests, explainability diff, artifact_viewer, list_runs, etc.) are maintained in **servers-archived**:
+
+- **servers-archived/eval_queries_slack_and_code.jsonl** – full question set (inferable + underdetermined) with artifact pointers and reference answers.
+
+Use that file for grading LLMs on artifact-based answers. This repo (CognitivePaperLab) holds the run artifacts and analysis code; the canonical eval queries for that workflow live in servers-archived.

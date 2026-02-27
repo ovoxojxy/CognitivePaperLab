@@ -18,6 +18,8 @@ ERROR_CATEGORIES = [
     "wrong_inference_from_correct_artifact",
     "normalization_confusion",
     "uncertainty_calibration_error",
+    "false_abstention",
+    "partial_retrieval_error",
 ]
 
 
@@ -71,6 +73,11 @@ def check_underdetermined_response(text: str) -> bool:
         r"no.*evidence",
         r"unknown",
         r"unclear from artifacts",
+        r"not enough information",
+        r"artifacts? don'?t show",
+        r"no way to tell from the available",
+        r"cannot be determined from",
+        r"not .* available .* in .* artifacts?",
     ]
     return any(re.search(p, t) for p in patterns)
 
@@ -89,7 +96,6 @@ def check_overconfident_mechanistic(text: str, code_not_allowed: bool) -> bool:
     if not code_not_allowed:
         return False
     t = text.lower()
-    # Claims about internal logic, implementation details
     overconfident = [
         "the code does",
         "the function",
@@ -108,17 +114,41 @@ def classify_error(
     is_underdetermined: bool,
     said_cannot_infer: bool,
 ) -> str | None:
-    """Classify error category."""
+    """Classify error into a specific category for analysis."""
     if is_underdetermined:
         if not said_cannot_infer and actual:
             return "uncertainty_calibration_error"
         return None
-    # Inferable but wrong
-    if not actual or "cannot infer" in normalize_answer(actual):
-        return "missing_evidence_hallucination"
-    if "normaliz" in (expected + actual).lower() or "raw" in (expected + actual).lower() or "coerc" in (expected + actual).lower():
+
+    na = normalize_answer(actual)
+
+    # Inferable question but model abstained
+    if not actual or said_cannot_infer:
+        return "false_abstention"
+
+    # Check for normalization-related confusion
+    combined = (expected + actual).lower()
+    if any(kw in combined for kw in ("normaliz", "coerc", "coercion", "type mismatch", "string to int")):
         return "normalization_confusion"
-    # Could be wrong retrieval or wrong inference - heuristic
+
+    # Check if model cited wrong artifact or wrong run
+    artifact = question.get("artifact", "")
+    if artifact and artifact.startswith("runs/"):
+        run_name = artifact.split("/")[1] if "/" in artifact else ""
+        if run_name and run_name not in na:
+            other_runs = [r for r in ("20250204", "20250205", "20250206", "20260201") if r in na and r not in run_name]
+            if other_runs:
+                return "wrong_artifact_retrieval"
+
+    # Check for partial retrieval (got some facts right but missed key detail)
+    ne = normalize_answer(expected)
+    if len(ne) > 20:
+        ne_words = set(ne.split())
+        na_words = set(na.split())
+        overlap = len(ne_words & na_words) / len(ne_words) if ne_words else 0
+        if 0.2 < overlap < 0.7:
+            return "partial_retrieval_error"
+
     return "wrong_inference_from_correct_artifact"
 
 

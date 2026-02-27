@@ -5,6 +5,15 @@ import json
 from typing import Any
 
 
+INT_COERCION_FIELDS = frozenset({
+    "record_count",
+    "count",
+    "total",
+    "num_records",
+    "item_count",
+})
+
+
 def normalize_value(val: Any, path: str = "", key: str = "") -> Any:
     """Normalize a value."""
     if isinstance(val, dict):
@@ -12,8 +21,7 @@ def normalize_value(val: Any, path: str = "", key: str = "") -> Any:
     if isinstance(val, list):
         return [normalize_value(v, f"{path}[{i}]", "") for i, v in enumerate(val)]
     if isinstance(val, str) and val.isdigit():
-        # Coerce numeric strings to int for record_count and count for consistent comparison
-        if key in ("record_count", "count"):
+        if key in INT_COERCION_FIELDS:
             return int(val)
     return val
 

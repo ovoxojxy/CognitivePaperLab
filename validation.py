@@ -54,7 +54,7 @@ def validate(
             try:
                 c = int(rec["count"])
             except (TypeError, ValueError):
-                pass
+                raise SchemaError(f"count field is not numeric: {rec['count']!r}", index=i)
             else:
                 if c < min_count:
                     raise SemanticError(f"count must be >= {min_count}, got {c}", index=i)

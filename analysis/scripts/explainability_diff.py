@@ -87,15 +87,17 @@ def deep_diff(a, b, path=""):
 
 def main():
     if len(sys.argv) < 3:
-        print("Usage: explainability_diff.py <run_a> <run_b> [--out report_dir]")
+        print("Usage: explainability_diff.py <run_a> <run_b> [--out report_dir] [--max-diffs N]")
         sys.exit(1)
     run_a, run_b = Path(sys.argv[1]), Path(sys.argv[2])
     out_dir = None
+    max_diffs = None
     args = sys.argv[3:]
     for i, a in enumerate(args):
         if a == "--out" and i + 1 < len(args):
             out_dir = Path(args[i + 1])
-            break
+        elif a == "--max-diffs" and i + 1 < len(args):
+            max_diffs = int(args[i + 1])
 
     if not run_a.exists() or not run_b.exists():
         print(json.dumps({"error": "One or both run paths not found"}))
@@ -164,21 +166,35 @@ def main():
         norm_paths = {d.get("path") for d in output_diffs_normalized}
         removed = raw_paths - norm_paths
         added = norm_paths - raw_paths
-        norm_note = f"Normalization changed diffs. Removed from raw: {removed or 'none'}. Added in normalized: {added or 'none'}. Normalization coerces record_count and count (string->int) and may mask or expose type-only diffs."
+        norm_note = f"Normalization changed diffs. Removed from raw: {removed or 'none'}. Added in normalized: {added or 'none'}. Normalization coerces record_count, count, total, num_records, and item_count (string->int via INT_COERCION_FIELDS) and may mask or expose type-only diffs."
     else:
         norm_note = "Raw and normalized diffs are identical."
+
+    raw_out = output_diffs_raw[:max_diffs] if max_diffs is not None else output_diffs_raw
+    norm_out = output_diffs_normalized[:max_diffs] if max_diffs is not None else output_diffs_normalized
+    trace_out = trace_diffs[:max_diffs] if max_diffs is not None else trace_diffs
 
     result = {
         "run_a": str(run_a),
         "run_b": str(run_b),
         "trace_naming_warning": trace_naming_warning,
-        "raw_output_diffs": output_diffs_raw[:30],
-        "normalized_output_diffs": output_diffs_normalized[:30],
-        "trace_diffs": trace_diffs[:30],
+        "raw_output_diffs": raw_out,
+        "normalized_output_diffs": norm_out,
+        "trace_diffs": trace_out,
         "judgment": judgment,
         "reasons": reasons,
         "normalization_note": norm_note,
     }
+
+    if max_diffs is not None:
+        for key, full in [
+            ("raw_output_diffs", output_diffs_raw),
+            ("normalized_output_diffs", output_diffs_normalized),
+            ("trace_diffs", trace_diffs),
+        ]:
+            if len(full) > max_diffs:
+                result[f"{key}_total"] = len(full)
+                result[f"{key}_truncated"] = True
 
     print(json.dumps(result, indent=2))
 

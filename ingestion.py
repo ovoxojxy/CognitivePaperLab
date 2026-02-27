@@ -20,11 +20,6 @@ def normalize_record_keys(records: list[dict[str, Any]]) -> list[dict[str, Any]]
     return out
 
 
-def normalize_keys_for_ingestion(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Normalize keys for ingestion pipeline (canonical form)."""
-    return list(records)
-
-
 def ingest(
     raw: str,
     format: str,
@@ -45,6 +40,10 @@ def ingest(
     else:
         raise ValueError(f"unknown format: {format}")
 
+    # NOTE: Key normalization uses normalize_record_keys (lowercase only).
+    # We intentionally do NOT apply canonical snake_case normalization here
+    # because it would change output hashes and invalidate the counterfactual
+    # grid baselines. See discussion on the normalize_keys_for_ingestion removal.
     if normalize_keys:
         records = normalize_record_keys(records)
 

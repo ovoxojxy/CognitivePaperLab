@@ -82,13 +82,36 @@ def check_underdetermined_response(text: str) -> bool:
     return any(re.search(p, t) for p in patterns)
 
 
-def check_grounding(text: str, allowed_artifacts: list[str]) -> bool:
-    """Check if response cites allowed artifacts (paths, manifest, trace, etc.)."""
+_ARTIFACT_PATTERN = re.compile(
+    r"(?:[\w\-./]+\.(?:py|json|csv|yaml|yml|toml|txt|md|log))"
+    r"|(?:runs/[\w\-]+)"
+    r"|(?:manifest|trace|config)",
+    re.IGNORECASE,
+)
+
+
+def check_grounding(text: str, allowed_artifacts: list[str], *, strict: bool = True) -> bool:
+    """Check if response only cites artifacts from the allowed set.
+
+    In strict mode (default), every artifact-like reference in the response
+    must appear in allowed_artifacts. In lenient mode, the check passes if
+    at least one allowed artifact is referenced.
+    """
     if not text or not allowed_artifacts:
-        return True  # No constraint
+        return True
+
     t = text.lower()
-    refs = ["manifest", "trace", "outputs", "config", "explainability", "runs/", "normalization_note", "report"]
-    return any(ref in t for ref in refs)
+    allowed_lower = {a.lower() for a in allowed_artifacts}
+
+    cited = set(_ARTIFACT_PATTERN.findall(t))
+
+    if not cited:
+        return True
+
+    if strict:
+        return all(c in allowed_lower for c in cited)
+
+    return any(a in t for a in allowed_lower)
 
 
 def check_overconfident_mechanistic(text: str, code_not_allowed: bool) -> bool:
